@@ -1,4 +1,69 @@
 baseURL: https://saylerb.github.io/personal-site/
 languageCode: en-us
-title: My New Hugo Site
-theme: ["PaperMod"]
+title: ""
+theme:
+  - PaperMod
+pagination:
+  pagerSize: 10
+enableRobotsTXT: true
+minify:
+  disableXML: true
+  minifyOutput: true
+params:
+  title: ""
+  description: Brian's Personal Site
+  keywords:
+    - blog
+    - hugo
+    - papermod
+  author: Brian Sayler
+  DateFormat: Jan 2, 2006
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowShareButtons: false # shows share buttons in individual posts
+  ShowReadingTime: true
+  ShowWordCount: false
+  ShowToc: false
+  TocOpen: false
+  showRelatedPosts: true
+  ShowBreadCrumbs: true
+  ShowPostNavLinks: true
+  ShowRssButtonInSectionTermList: false
+  ShowCodeCopyButtons: true
+  UseHugoToc: true
+  hideFooter: true
+  socialIcons:
+    - name: github
+      url: https://github.com/saylerb
+    - name: linkedin
+      url: https://www.linkedin.com/in/saylerb/
+  profileMode:
+    enabled: true
+    title: "Hi, I'm Brian"
+    subtitle: |
+      developer, writer, curious human
+    imageUrl: images/profile.jpg
+    imageTitle: Brian Sayler
+    buttons:
+      - name: Blog
+        url: posts
+      - name: About
+        url: about
+  cover:
+    hidden: false
+    hiddenInList: false
+    hiddenInSingle: false
+menu:
+  main:
+    - identifier: posts
+      name: Posts
+      url: /posts/
+      weight: 10
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 20
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 30
