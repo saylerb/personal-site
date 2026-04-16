@@ -1,12 +1,13 @@
 # Terraform
 
-Manages AWS infrastructure for this site. Currently: an S3 bucket
-for static hosting and an IAM role assumed by GitHub Actions via OIDC
-for deploys. Local state, single sandbox account.
+Manages AWS infrastructure for this site. Currently: a private S3
+bucket, a CloudFront distribution fronting it via OAC, and an IAM
+role assumed by GitHub Actions via OIDC for deploys. Local state,
+single sandbox account.
 
 ## Prereqs
 
-- Terraform `1.14.8` (via tfenv — see `.terraform-version`)
+- Terraform `1.14.8` (via tfenv - see `.terraform-version`)
 - AWS CLI configured: `aws sts get-caller-identity`
 
 ## Usage
@@ -25,6 +26,11 @@ Override defaults with `-var="bucket_name=..."` or a `terraform.tfvars` file.
 ## Outputs
 
 - `bucket_name`, `bucket_arn` - S3 bucket identifiers
-- `website_endpoint` - S3 static website URL
+- `website_endpoint` - S3 static website URL (unused now that the
+  bucket is private; kept for reference)
+- `cloudfront_domain` - CloudFront distribution domain (serve over
+  `https://`); update the `AWS_S3_SITE_URL` variable in GitHub
+  Actions to this value
+- `cloudfront_distribution_id` - used for cache invalidations
 - `deploy_role_arn` - IAM role ARN; set as the `AWS_DEPLOY_ROLE_ARN`
   secret in GitHub Actions so the deploy workflow can assume it

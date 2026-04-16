@@ -1,3 +1,11 @@
+resource "aws_cloudfront_origin_access_control" "site" {
+  name                              = "personal-site-oac"
+  description                       = "OAC for personal-site S3 origin"
+  origin_access_control_origin_type = "s3"
+  signing_behavior                  = "always"
+  signing_protocol                  = "sigv4"
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -8,6 +16,7 @@ resource "aws_cloudfront_distribution" "site" {
   origin {
     origin_id                = "s3-${aws_s3_bucket.site.id}"
     domain_name              = aws_s3_bucket.site.bucket_regional_domain_name
+    origin_access_control_id = aws_cloudfront_origin_access_control.site.id
   }
 
   default_cache_behavior {
@@ -31,3 +40,30 @@ resource "aws_cloudfront_distribution" "site" {
     cloudfront_default_certificate = true
   }
 }
+
+data "aws_iam_policy_document" "cloudfront_read" {
+  statement {
+    sid     = "AllowCloudFrontRead"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["cloudfront.amazonaws.com"]
+    }
+
+    resources = ["${aws_s3_bucket.site.arn}/*"]
+
+    condition {
+      test     = "StringEquals"
+      variable = "AWS:SourceArn"
+      values   = [aws_cloudfront_distribution.site.arn]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "site" {
+  bucket = aws_s3_bucket.site.id
+  policy = data.aws_iam_policy_document.cloudfront_read.json
+}
+

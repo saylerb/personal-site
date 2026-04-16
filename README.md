@@ -11,5 +11,5 @@ To deploy to S3 manually from your machine:
 ./deploy.sh
 ```
 
-Infrastructure (S3 bucket, GitHub Actions OIDC role) is managed in
-[`terraform/`](./terraform/README.md).
+Infrastructure (S3 bucket, CloudFront distribution, GitHub Actions
+OIDC role) is managed in [`terraform/`](./terraform/README.md).
