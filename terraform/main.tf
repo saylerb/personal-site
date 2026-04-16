@@ -34,6 +34,28 @@ resource "aws_s3_bucket_public_access_block" "site" {
   restrict_public_buckets = false
 }
 
+data "aws_iam_policy_document" "public_read" {
+  statement {
+    sid     = "PublicRead"
+    effect  = "Allow"
+    actions = ["s3:GetObject"]
+
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+
+    resources = ["${aws_s3_bucket.site.arn}/*"]
+  }
+}
+
+resource "aws_s3_bucket_policy" "site" {
+  bucket = aws_s3_bucket.site.id
+  policy = data.aws_iam_policy_document.public_read.json
+
+  depends_on = [aws_s3_bucket_public_access_block.site]
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "site" {
   bucket = aws_s3_bucket.site.id
 
