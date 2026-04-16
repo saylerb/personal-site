@@ -10,3 +10,15 @@ hugo.linux
 
 # Temporary lock file while building
 /.hugo_build.lock
+
+# Dolt database files (added by bd init)
+.dolt/
+*.db
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.tfvars
+terraform/*.tfvars.json
