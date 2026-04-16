@@ -6,7 +6,7 @@ cd "$(dirname "$0")"
 BUCKET="$(terraform -chdir=terraform output -raw bucket_name)"
 WEBSITE_ENDPOINT="$(terraform -chdir=terraform output -raw website_endpoint)"
 
-hugo --minify
+hugo --minify --baseURL "${WEBSITE_ENDPOINT}/"
 
 aws s3 sync public/ "s3://${BUCKET}/" --delete
 
