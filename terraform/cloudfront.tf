@@ -1,3 +1,11 @@
+resource "aws_cloudfront_function" "url_rewrite" {
+  name    = "personal-site-url-rewrite"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrite /path/ and /path to /path/index.html"
+  publish = true
+  code    = file("${path.module}/cloudfront_url_rewrite.js")
+}
+
 resource "aws_cloudfront_origin_access_control" "site" {
   name                              = "personal-site-oac"
   description                       = "OAC for personal-site S3 origin"
@@ -28,6 +36,11 @@ resource "aws_cloudfront_distribution" "site" {
 
     # AWS-managed CachingOptimized policy
     cache_policy_id = "658327ea-f89d-4fab-a63d-7e88639e58f6"
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_rewrite.arn
+    }
   }
 
   restrictions {
