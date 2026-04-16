@@ -53,6 +53,13 @@ data "aws_iam_policy_document" "deploy" {
     ]
     resources = ["${aws_s3_bucket.site.arn}/*"]
   }
+
+  statement {
+    sid       = "InvalidateCloudFront"
+    effect    = "Allow"
+    actions   = ["cloudfront:CreateInvalidation"]
+    resources = [aws_cloudfront_distribution.site.arn]
+  }
 }
 
 resource "aws_iam_role_policy" "github_actions_deploy" {
