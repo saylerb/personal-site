@@ -1,7 +1,8 @@
 # Terraform
 
-Manages AWS infrastructure for this site. Currently: a s3 bucket
-with local state in a single sandbox account.
+Manages AWS infrastructure for this site. Currently: an S3 bucket
+for static hosting and an IAM role assumed by GitHub Actions via OIDC
+for deploys. Local state, single sandbox account.
 
 ## Prereqs
 
@@ -20,3 +21,10 @@ terraform destroy   # tear down (bucket must be empty)
 ```
 
 Override defaults with `-var="bucket_name=..."` or a `terraform.tfvars` file.
+
+## Outputs
+
+- `bucket_name`, `bucket_arn` - S3 bucket identifiers
+- `website_endpoint` - S3 static website URL
+- `deploy_role_arn` - IAM role ARN; set as the `AWS_DEPLOY_ROLE_ARN`
+  secret in GitHub Actions so the deploy workflow can assume it
