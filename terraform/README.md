@@ -26,8 +26,6 @@ Override defaults with `-var="bucket_name=..."` or a `terraform.tfvars` file.
 ## Outputs
 
 - `bucket_name`, `bucket_arn` - S3 bucket identifiers
-- `website_endpoint` - S3 static website URL (unused now that the
-  bucket is private; kept for reference)
 - `cloudfront_domain` - CloudFront distribution domain (serve over
   `https://`); update the `AWS_S3_SITE_URL` variable in GitHub
   Actions to this value
